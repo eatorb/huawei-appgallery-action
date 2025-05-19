@@ -124,14 +124,14 @@ const getUploadUrl = async (token, clientId, appId, filePath) => {
         const userAgent = 'GithubAction';
         const url = `${constants_1.DOMAIN}/publish/v2/upload-url/for-obs?appId=${appId}&fileName=${fileName}&sha256=${sha256}&contentLength=${size}&releaseType=${releaseType}&userAgent=${userAgent}`;
         console.log(`Request URL: ${url}`);
+        console.log(`Authorization header: Bearer ${token.substring(0, 10)}...`);
+        console.log(`client_id header: ${clientId}`);
         const response = await axios_1.default.get(url, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 client_id: clientId,
             },
         });
-        console.log(`Authorization header: Bearer ${token.substring(0, 10)}...`);
-        console.log(`client_id header: ${clientId}`);
         (0, logger_1.logSuccess)('Upload URL obtained successfully');
         return {
             url: response.data.urlInfo.url,
@@ -329,7 +329,6 @@ const path = __importStar(__nccwpck_require__(6928));
 const crypto = __importStar(__nccwpck_require__(6982));
 const logger_1 = __nccwpck_require__(8532);
 const getFileInfo = (filePath) => {
-    console.log('File exists', fs.existsSync(filePath));
     if (!fs.existsSync(filePath)) {
         throw new Error(`File not found: ${filePath}`);
     }
