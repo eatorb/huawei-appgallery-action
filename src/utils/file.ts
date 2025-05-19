@@ -10,7 +10,7 @@ export const getFileInfo = (
   size: number;
   sha256: string;
 } => {
-  if (fs.existsSync(filePath)) {
+  if (!fs.existsSync(filePath)) {
     throw new Error(`File not found: ${filePath}`);
   }
 
