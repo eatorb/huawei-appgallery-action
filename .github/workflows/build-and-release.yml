@@ -3,7 +3,7 @@ name: Build and Release
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - 'src/**'
       - 'package.json'
@@ -11,7 +11,7 @@ on:
       - 'tsconfig.json'
   pull_request:
     branches:
-      - main
+      - master
     paths:
       - 'src/**'
       - 'package.json'
@@ -60,7 +60,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          ref: main
+          ref: master
           fetch-depth: 0
 
       - name: Setup Node.js
