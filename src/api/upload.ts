@@ -20,13 +20,17 @@ export const getUploadUrl = async (
     const userAgent = 'GithubAction';
 
     const url = `${DOMAIN}/publish/v2/upload-url/for-obs?appId=${appId}&fileName=${fileName}&sha256=${sha256}&contentLength=${size}&releaseType=${releaseType}&userAgent=${userAgent}`;
+    console.log(`Request URL: ${url}`);
 
     const response = await axios.get<UploadUrlResponse>(url, {
       headers: {
-        client_id: clientId,
         Authorization: `Bearer ${token}`,
+        client_id: clientId,
       },
     });
+
+    console.log(`Authorization header: Bearer ${token.substring(0, 10)}...`);
+    console.log(`client_id header: ${clientId}`);
 
     logSuccess('Upload URL obtained successfully');
 
