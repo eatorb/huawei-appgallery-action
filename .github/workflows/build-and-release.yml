@@ -1,0 +1,102 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and Bundle
+        run: npm run all
+
+      - name: Check for changes in dist
+        id: check_changes
+        run: |
+          git diff --quiet dist/ || echo "has_changes=true" >> $GITHUB_OUTPUT
+
+      - name: Commit dist changes
+        if: steps.check_changes.outputs.has_changes == 'true' && github.event_name == 'push'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add dist/
+          git commit -m "Build: Update dist bundle"
+          git push
+
+  release:
+    needs: build
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get latest version
+        id: get_version
+        run: |
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+          # Remove 'v' prefix and split into array
+          VERSION=${LATEST_TAG#v}
+          IFS='.' read -ra VERSION_PARTS <<< "$VERSION"
+          MAJOR=${VERSION_PARTS[0]}
+          MINOR=${VERSION_PARTS[1]}
+          PATCH=${VERSION_PARTS[2]}
+          # Increment patch version
+          PATCH=$((PATCH + 1))
+          echo "next_version=v$MAJOR.$MINOR.$PATCH" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEW_VERSION: ${{ steps.get_version.outputs.next_version }}
+        run: |
+          echo "Creating new tag: $NEW_VERSION"
+          git tag $NEW_VERSION
+          git push origin $NEW_VERSION
+
+          gh release create $NEW_VERSION \
+            --title "Release $NEW_VERSION" \
+            --notes "Automatic release generated from commit ${GITHUB_SHA}"
