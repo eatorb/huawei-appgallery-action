@@ -75,17 +75,23 @@ jobs:
       - name: Get latest version
         id: get_version
         run: |
-          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-          echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
-          # Remove 'v' prefix and split into array
-          VERSION=${LATEST_TAG#v}
-          IFS='.' read -ra VERSION_PARTS <<< "$VERSION"
-          MAJOR=${VERSION_PARTS[0]}
-          MINOR=${VERSION_PARTS[1]}
-          PATCH=${VERSION_PARTS[2]}
-          # Increment patch version
-          PATCH=$((PATCH + 1))
-          echo "next_version=v$MAJOR.$MINOR.$PATCH" >> $GITHUB_OUTPUT
+          # Check if any tags exist
+          if git tag | grep -q .; then
+            LATEST_TAG=$(git describe --tags --abbrev=0)
+            # Parse version and increment patch
+            VERSION=${LATEST_TAG#v}
+            IFS='.' read -ra VERSION_PARTS <<< "$VERSION"
+            MAJOR=${VERSION_PARTS[0]}
+            MINOR=${VERSION_PARTS[1]}
+            PATCH=${VERSION_PARTS[2]}
+            # Increment patch version
+            PATCH=$((PATCH + 1))
+            NEXT_VERSION="v$MAJOR.$MINOR.$PATCH"
+          else
+            # No tags exist, start with v1.0.0
+            NEXT_VERSION="v1.0.0"
+          fi
+          echo "next_version=$NEXT_VERSION" >> $GITHUB_OUTPUT
 
       - name: Create Release
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
@@ -98,5 +104,5 @@ jobs:
           git push origin $NEW_VERSION
 
           gh release create $NEW_VERSION \
-            --title "Release $NEW_VERSION" \
+            --title "$NEW_VERSION" \
             --notes "Automatic release generated from commit ${GITHUB_SHA}"
