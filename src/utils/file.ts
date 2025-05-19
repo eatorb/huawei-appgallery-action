@@ -11,7 +11,6 @@ export const getFileInfo = (
   sha256: string;
 } => {
   console.log(`File exists: ${fs.existsSync(filePath)}`);
-
   if (!fs.existsSync(filePath)) {
     throw new Error(`File not found: ${filePath}`);
   }
