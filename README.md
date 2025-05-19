@@ -91,16 +91,6 @@ Add the following secrets to your GitHub repository:
 - **File upload failures**: Check that your APK file exists at the specified path and is a valid APK.
 - **API errors**: Ensure your App ID is correct and belongs to your account.
 
-### Debug Logging
-
-For more verbose logging, enable debug logs in your GitHub Actions workflow:
-
-1. Go to your repository settings
-2. Navigate to "Secrets and variables" > "Actions"
-3. Create a new repository variable:
-    - Name: `ACTIONS_STEP_DEBUG`
-    - Value: `true`
-
 ## 📋 Example Workflow with Build and Deploy
 
 Here's a complete example that builds and deploys an Android app:
