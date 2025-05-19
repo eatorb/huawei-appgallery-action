@@ -1,0 +1,25 @@
+name: 'Huawei AppGallery Deploy'
+description: 'Upload and publish Android apps to Huawei AppGallery Connect'
+inputs:
+  client-id:
+    description: 'AppGallery Connect API Client ID'
+    required: true
+  client-secret:
+    description: 'AppGallery Connect API Client Secret'
+    required: true
+  app-id:
+    description: 'AppGallery Connect App ID'
+    required: true
+  file-path:
+    description: 'Path to the apk file to upload'
+    required: true
+  submit:
+    description: 'Submit for review after upload (true/false)'
+    default: 'false'
+    required: false
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
+branding:
+  icon: 'upload-cloud'
+  color: 'red'
