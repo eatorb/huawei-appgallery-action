@@ -25,7 +25,7 @@ export const updateAppFileInfo = async (
     };
 
     const response = await axios.put<ApiResponse>(
-      `${DOMAIN}/publish/v2/app-file-info?appId=${appId}`,
+      `${DOMAIN}/publish/v2/app-file-info?appId=${appId}?releaseType=2`,
       requestData,
       {
         headers: {
