@@ -65,7 +65,7 @@ const updateAppFileInfo = async (token, clientId, appId, fileName, fileDestUrl) 
                 },
             ],
         };
-        const response = await axios_1.default.put(`${constants_1.DOMAIN}/publish/v2/app-file-info?appId=${appId}?releaseType=2`, requestData, {
+        const response = await axios_1.default.put(`${constants_1.DOMAIN}/publish/v2/app-file-info?appId=${appId}`, requestData, {
             headers: {
                 client_id: clientId,
                 Authorization: `Bearer ${token}`,
@@ -85,16 +85,7 @@ exports.updateAppFileInfo = updateAppFileInfo;
 const submitApp = async (token, clientId, appId) => {
     (0, logger_1.logStep)('Submitting app for review');
     try {
-        const startTime = new Date(Date.now() + 10 * 60 * 1000);
-        const endTime = new Date(Date.now() + 60 * 24 * 60 * 60 * 1000);
-        const releaseType = 2;
-        const requestData = {
-            phasedReleaseStartTime: startTime,
-            phasedReleaseEndTime: endTime,
-            phasedReleasePercent: '100.00',
-            phasedReleaseDescription: 'test'
-        };
-        const response = await axios_1.default.post(`${constants_1.DOMAIN}/publish/v2/app-submit?appId=${appId}?releaseType=${releaseType}`, requestData, {
+        const response = await axios_1.default.post(`${constants_1.DOMAIN}/publish/v2/app-submit?appId=${appId}`, {}, {
             headers: {
                 client_id: clientId,
                 Authorization: `Bearer ${token}`,
@@ -248,7 +239,7 @@ const run = async () => {
         await (0, upload_1.uploadFile)(uploadInfo.url, uploadInfo.headers, config.filePath);
         await (0, publish_1.updateAppFileInfo)(token, config.clientId, config.appId, uploadInfo.fileName, uploadInfo.objectId);
         if (config.submit) {
-            //await submitApp(token, config.clientId, config.appId);
+            await (0, publish_1.submitApp)(token, config.clientId, config.appId);
         }
         (0, logger_1.logSuccess)('Deployment to Huawei AppGallery completed successfully');
     }
