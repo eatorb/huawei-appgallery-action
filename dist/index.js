@@ -87,13 +87,14 @@ const submitApp = async (token, clientId, appId) => {
     try {
         const startTime = new Date(Date.now() + 10 * 60 * 1000);
         const endTime = new Date(Date.now() + 60 * 24 * 60 * 60 * 1000);
+        const releaseType = 2;
         const requestData = {
             phasedReleaseStartTime: startTime,
             phasedReleaseEndTime: endTime,
             phasedReleasePercent: '100.00',
             phasedReleaseDescription: 'test'
         };
-        const response = await axios_1.default.post(`${constants_1.DOMAIN}/publish/v2/app-submit?appId=${appId}?releaseType=3`, requestData, {
+        const response = await axios_1.default.post(`${constants_1.DOMAIN}/publish/v2/app-submit?appId=${appId}?releaseType=${releaseType}`, requestData, {
             headers: {
                 client_id: clientId,
                 Authorization: `Bearer ${token}`,
@@ -133,7 +134,7 @@ const getUploadUrl = async (token, clientId, appId, filePath) => {
     (0, logger_1.logStep)('Getting file upload URL');
     try {
         const { fileName, size, sha256 } = (0, file_1.getFileInfo)(filePath);
-        const releaseType = 1;
+        const releaseType = 2;
         const userAgent = 'GithubAction';
         const url = `${constants_1.DOMAIN}/publish/v2/upload-url/for-obs?appId=${appId}&fileName=${fileName}&sha256=${sha256}&contentLength=${size}&releaseType=${releaseType}&userAgent=${userAgent}`;
         const response = await axios_1.default.get(url, {
