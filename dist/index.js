@@ -65,7 +65,7 @@ const updateAppFileInfo = async (token, clientId, appId, fileName, fileDestUrl) 
                 },
             ],
         };
-        const response = await axios_1.default.put(`${constants_1.DOMAIN}/publish/v2/app-file-info?appId=${appId}`, requestData, {
+        const response = await axios_1.default.put(`${constants_1.DOMAIN}/publish/v2/app-file-info?appId=${appId}?releaseType=2`, requestData, {
             headers: {
                 client_id: clientId,
                 Authorization: `Bearer ${token}`,
@@ -248,7 +248,7 @@ const run = async () => {
         await (0, upload_1.uploadFile)(uploadInfo.url, uploadInfo.headers, config.filePath);
         await (0, publish_1.updateAppFileInfo)(token, config.clientId, config.appId, uploadInfo.fileName, uploadInfo.objectId);
         if (config.submit) {
-            await (0, publish_1.submitApp)(token, config.clientId, config.appId);
+            //await submitApp(token, config.clientId, config.appId);
         }
         (0, logger_1.logSuccess)('Deployment to Huawei AppGallery completed successfully');
     }
