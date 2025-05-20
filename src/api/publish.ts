@@ -25,7 +25,7 @@ export const updateAppFileInfo = async (
     };
 
     const response = await axios.put<ApiResponse>(
-      `${DOMAIN}/publish/v2/app-file-info?appId=${appId}?releaseType=2`,
+      `${DOMAIN}/publish/v2/app-file-info?appId=${appId}`,
       requestData,
       {
         headers: {
@@ -50,20 +50,9 @@ export const submitApp = async (token: string, clientId: string, appId: string) 
   logStep('Submitting app for review');
 
   try {
-    const startTime = new Date(Date.now() + 10 * 60 * 1000);
-    const endTime = new Date(Date.now() + 60 * 24 * 60 * 60 * 1000);
-
-    const releaseType = 2;
-    const requestData = {
-        phasedReleaseStartTime: startTime,
-        phasedReleaseEndTime: endTime,
-        phasedReleasePercent: '100.00',
-        phasedReleaseDescription: 'test'
-    }
-
     const response = await axios.post<ApiResponse>(
-      `${DOMAIN}/publish/v2/app-submit?appId=${appId}?releaseType=${releaseType}`,
-      requestData,
+      `${DOMAIN}/publish/v2/app-submit?appId=${appId}`,
+      {},
       {
         headers: {
           client_id: clientId,

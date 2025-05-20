@@ -32,7 +32,7 @@ export const run = async (): Promise<void> => {
     );
 
     if (config.submit) {
-      //await submitApp(token, config.clientId, config.appId);
+      await submitApp(token, config.clientId, config.appId);
     }
 
     logSuccess('Deployment to Huawei AppGallery completed successfully');
