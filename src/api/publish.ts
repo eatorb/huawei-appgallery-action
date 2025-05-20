@@ -3,7 +3,6 @@ import axios from 'axios';
 import { ApiResponse, AppFileInfoRequest } from '../types';
 import { DOMAIN } from '../constants';
 import { handleApiError } from '../utils/error';
-import {start} from "node:repl";
 
 export const updateAppFileInfo = async (
   token: string,
@@ -54,7 +53,7 @@ export const submitApp = async (token: string, clientId: string, appId: string) 
     const startTime = new Date(Date.now() + 10 * 60 * 1000);
     const endTime = new Date(Date.now() + 60 * 24 * 60 * 60 * 1000);
 
-
+    const releaseType = 2;
     const requestData = {
         phasedReleaseStartTime: startTime,
         phasedReleaseEndTime: endTime,
@@ -63,7 +62,7 @@ export const submitApp = async (token: string, clientId: string, appId: string) 
     }
 
     const response = await axios.post<ApiResponse>(
-      `${DOMAIN}/publish/v2/app-submit?appId=${appId}?releaseType=3`,
+      `${DOMAIN}/publish/v2/app-submit?appId=${appId}?releaseType=${releaseType}`,
       requestData,
       {
         headers: {
