@@ -16,7 +16,7 @@ export const getUploadUrl = async (
   try {
     const { fileName, size, sha256 } = getFileInfo(filePath);
 
-    const releaseType = 2;
+    const releaseType = 1;
     const userAgent = 'GithubAction';
 
     const url = `${DOMAIN}/publish/v2/upload-url/for-obs?appId=${appId}&fileName=${fileName}&sha256=${sha256}&contentLength=${size}&releaseType=${releaseType}&userAgent=${userAgent}`;
