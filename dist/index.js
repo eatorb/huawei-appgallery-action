@@ -53,12 +53,15 @@ const logger_1 = __nccwpck_require__(8532);
 const axios_1 = __importDefault(__nccwpck_require__(7269));
 const constants_1 = __nccwpck_require__(8729);
 const error_1 = __nccwpck_require__(5172);
-const updateAppFileInfo = async (token, clientId, appId, fileName) => {
+const updateAppFileInfo = async (token, clientId, appId, fileName, fileDestUrl) => {
     (0, logger_1.logStep)('Updating app file information');
     try {
         const requestData = {
             fileType: '5', // 5 for apk
-            files: [{ fileName: fileName }],
+            files: [{
+                    fileName: fileName,
+                    fileDestUrl: fileDestUrl
+                }],
         };
         const response = await axios_1.default.put(`${constants_1.DOMAIN}/publish/v2/app-file-info?appId=${appId}`, requestData, {
             headers: {
@@ -231,7 +234,7 @@ const run = async () => {
         const token = await (0, auth_1.getToken)(config.clientId, config.clientSecret);
         const uploadInfo = await (0, upload_1.getUploadUrl)(token, config.clientId, config.appId, config.filePath);
         await (0, upload_1.uploadFile)(uploadInfo.url, uploadInfo.headers, config.filePath);
-        await (0, publish_1.updateAppFileInfo)(token, config.clientId, config.appId, uploadInfo.fileName);
+        await (0, publish_1.updateAppFileInfo)(token, config.clientId, config.appId, uploadInfo.fileName, uploadInfo.url);
         if (config.submit) {
             await (0, publish_1.submitApp)(token, config.clientId, config.appId);
         }
