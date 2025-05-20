@@ -58,7 +58,7 @@ const updateAppFileInfo = async (token, clientId, appId, fileName) => {
     try {
         const requestData = {
             fileType: '5', // 5 for apk
-            files: [fileName],
+            files: [{ fileName: fileName }],
         };
         const response = await axios_1.default.put(`${constants_1.DOMAIN}/publish/v2/app-file-info?appId=${appId}`, requestData, {
             headers: {
@@ -123,9 +123,6 @@ const getUploadUrl = async (token, clientId, appId, filePath) => {
         const releaseType = 1;
         const userAgent = 'GithubAction';
         const url = `${constants_1.DOMAIN}/publish/v2/upload-url/for-obs?appId=${appId}&fileName=${fileName}&sha256=${sha256}&contentLength=${size}&releaseType=${releaseType}&userAgent=${userAgent}`;
-        console.log(`Request URL: ${url}`);
-        console.log(`Authorization header: Bearer ${token.substring(0, 10)}...`);
-        console.log(`client_id header: ${clientId}`);
         const response = await axios_1.default.get(url, {
             headers: {
                 Authorization: `Bearer ${token}`,
