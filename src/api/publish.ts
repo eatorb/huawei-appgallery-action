@@ -9,13 +9,17 @@ export const updateAppFileInfo = async (
   clientId: string,
   appId: string,
   fileName: string,
+  fileDestUrl: string
 ): Promise<void> => {
   logStep('Updating app file information');
 
   try {
     const requestData: AppFileInfoRequest = {
       fileType: '5', // 5 for apk
-      files: [{ fileName: fileName }],
+      files: [{
+        fileName: fileName,
+        fileDestUrl: fileDestUrl
+      }],
     };
 
     const response = await axios.put<ApiResponse>(
