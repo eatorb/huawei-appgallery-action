@@ -139,7 +139,7 @@ const getUploadUrl = async (token, clientId, appId, filePath) => {
             url: response.data.urlInfo.url,
             headers: response.data.urlInfo.headers,
             fileName: fileName,
-            objectId: response.data.urlInfo.objectId
+            objectId: response.data.urlInfo.objectId,
         };
     }
     catch (e) {
@@ -239,7 +239,7 @@ const run = async () => {
         await (0, upload_1.uploadFile)(uploadInfo.url, uploadInfo.headers, config.filePath);
         await (0, publish_1.updateAppFileInfo)(token, config.clientId, config.appId, uploadInfo.fileName, uploadInfo.objectId);
         if (config.submit) {
-            await (0, publish_1.submitApp)(token, config.clientId, config.appId);
+            //await submitApp(token, config.clientId, config.appId);
         }
         (0, logger_1.logSuccess)('Deployment to Huawei AppGallery completed successfully');
     }
