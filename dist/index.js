@@ -58,10 +58,12 @@ const updateAppFileInfo = async (token, clientId, appId, fileName, fileDestUrl) 
     try {
         const requestData = {
             fileType: '5', // 5 for apk
-            files: [{
+            files: [
+                {
                     fileName: fileName,
-                    fileDestUrl: fileDestUrl
-                }],
+                    fileDestUrl: fileDestUrl,
+                },
+            ],
         };
         const response = await axios_1.default.put(`${constants_1.DOMAIN}/publish/v2/app-file-info?appId=${appId}`, requestData, {
             headers: {
