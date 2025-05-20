@@ -85,7 +85,15 @@ exports.updateAppFileInfo = updateAppFileInfo;
 const submitApp = async (token, clientId, appId) => {
     (0, logger_1.logStep)('Submitting app for review');
     try {
-        const response = await axios_1.default.post(`${constants_1.DOMAIN}/publish/v2/app-submit?appId=${appId}`, {}, {
+        const startTime = new Date(Date.now() + 10 * 60 * 1000);
+        const endTime = new Date(Date.now() + 60 * 24 * 60 * 60 * 1000);
+        const requestData = {
+            phasedReleaseStartTime: startTime,
+            phasedReleaseEndTime: endTime,
+            phasedReleasePercent: '100.00',
+            phasedReleaseDescription: 'test'
+        };
+        const response = await axios_1.default.post(`${constants_1.DOMAIN}/publish/v2/app-submit?appId=${appId}?releaseType=3`, requestData, {
             headers: {
                 client_id: clientId,
                 Authorization: `Bearer ${token}`,
