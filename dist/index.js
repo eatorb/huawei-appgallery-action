@@ -139,6 +139,7 @@ const getUploadUrl = async (token, clientId, appId, filePath) => {
             url: response.data.urlInfo.url,
             headers: response.data.urlInfo.headers,
             fileName: fileName,
+            objectId: response.data.urlInfo.objectId
         };
     }
     catch (e) {
@@ -236,7 +237,7 @@ const run = async () => {
         const token = await (0, auth_1.getToken)(config.clientId, config.clientSecret);
         const uploadInfo = await (0, upload_1.getUploadUrl)(token, config.clientId, config.appId, config.filePath);
         await (0, upload_1.uploadFile)(uploadInfo.url, uploadInfo.headers, config.filePath);
-        await (0, publish_1.updateAppFileInfo)(token, config.clientId, config.appId, uploadInfo.fileName, uploadInfo.url);
+        await (0, publish_1.updateAppFileInfo)(token, config.clientId, config.appId, uploadInfo.fileName, uploadInfo.objectId);
         if (config.submit) {
             await (0, publish_1.submitApp)(token, config.clientId, config.appId);
         }
