@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ApiResponse, AppFileInfoRequest } from '../types';
 import { DOMAIN } from '../constants';
 import { handleApiError } from '../utils/error';
+import {start} from "node:repl";
 
 export const updateAppFileInfo = async (
   token: string,
@@ -50,9 +51,20 @@ export const submitApp = async (token: string, clientId: string, appId: string) 
   logStep('Submitting app for review');
 
   try {
+    const startTime = new Date(Date.now() + 10 * 60 * 1000);
+    const endTime = new Date(Date.now() + 60 * 24 * 60 * 60 * 1000);
+
+
+    const requestData = {
+        phasedReleaseStartTime: startTime,
+        phasedReleaseEndTime: endTime,
+        phasedReleasePercent: '100.00',
+        phasedReleaseDescription: 'test'
+    }
+
     const response = await axios.post<ApiResponse>(
-      `${DOMAIN}/publish/v2/app-submit?appId=${appId}`,
-      {},
+      `${DOMAIN}/publish/v2/app-submit?appId=${appId}?releaseType=3`,
+      requestData,
       {
         headers: {
           client_id: clientId,
