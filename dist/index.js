@@ -134,7 +134,7 @@ const getUploadUrl = async (token, clientId, appId, filePath) => {
     (0, logger_1.logStep)('Getting file upload URL');
     try {
         const { fileName, size, sha256 } = (0, file_1.getFileInfo)(filePath);
-        const releaseType = 2;
+        const releaseType = 1;
         const userAgent = 'GithubAction';
         const url = `${constants_1.DOMAIN}/publish/v2/upload-url/for-obs?appId=${appId}&fileName=${fileName}&sha256=${sha256}&contentLength=${size}&releaseType=${releaseType}&userAgent=${userAgent}`;
         const response = await axios_1.default.get(url, {
