@@ -15,7 +15,7 @@ export const updateAppFileInfo = async (
   try {
     const requestData: AppFileInfoRequest = {
       fileType: '5', // 5 for apk
-      files: [fileName],
+      files: [{ fileName: fileName }],
     };
 
     const response = await axios.put<ApiResponse>(

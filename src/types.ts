@@ -31,7 +31,12 @@ export interface UploadInfo {
   fileName: string;
 }
 
+export interface FileInfo {
+  fileName: string;
+  fileDestUrl?: string;
+}
+
 export interface AppFileInfoRequest {
   fileType: string;
-  files: string[];
+  files: FileInfo[];
 }
