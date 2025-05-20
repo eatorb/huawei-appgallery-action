@@ -12,8 +12,10 @@ export interface ApiResponse {
 
 export interface UploadUrlResponse extends ApiResponse {
   urlInfo: {
+    objectId: string;
     url: string;
     headers: Record<string, string>;
+    method?: string;
   };
 }
 
@@ -29,6 +31,7 @@ export interface UploadInfo {
   url: string;
   headers: Record<string, string>;
   fileName: string;
+  objectId: string;
 }
 
 export interface FileInfo {

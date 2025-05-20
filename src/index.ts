@@ -28,7 +28,7 @@ export const run = async (): Promise<void> => {
       config.clientId,
       config.appId,
       uploadInfo.fileName,
-      uploadInfo.url,
+      uploadInfo.objectId
     );
 
     if (config.submit) {
