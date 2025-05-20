@@ -28,11 +28,11 @@ export const run = async (): Promise<void> => {
       config.clientId,
       config.appId,
       uploadInfo.fileName,
-      uploadInfo.objectId
+      uploadInfo.objectId,
     );
 
     if (config.submit) {
-      await submitApp(token, config.clientId, config.appId);
+      //await submitApp(token, config.clientId, config.appId);
     }
 
     logSuccess('Deployment to Huawei AppGallery completed successfully');

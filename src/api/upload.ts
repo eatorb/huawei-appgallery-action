@@ -34,7 +34,7 @@ export const getUploadUrl = async (
       url: response.data.urlInfo.url,
       headers: response.data.urlInfo.headers,
       fileName: fileName,
-      objectId: response.data.urlInfo.objectId
+      objectId: response.data.urlInfo.objectId,
     };
   } catch (e) {
     return handleApiError(e, 'get upload URL');
