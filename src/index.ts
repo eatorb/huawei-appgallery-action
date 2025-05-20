@@ -23,7 +23,13 @@ export const run = async (): Promise<void> => {
 
     await uploadFile(uploadInfo.url, uploadInfo.headers, config.filePath);
 
-    await updateAppFileInfo(token, config.clientId, config.appId, uploadInfo.fileName, uploadInfo.url);
+    await updateAppFileInfo(
+      token,
+      config.clientId,
+      config.appId,
+      uploadInfo.fileName,
+      uploadInfo.url,
+    );
 
     if (config.submit) {
       await submitApp(token, config.clientId, config.appId);
